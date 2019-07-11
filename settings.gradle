@@ -1,0 +1,1 @@
+include ':sdkexample', ':nirsit_sdk'

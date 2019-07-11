@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:paddingBottom="10dp">
+
+        <Switch
+            android:id="@+id/lpfSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LPF" />
+
+        <Switch
+            android:id="@+id/heartbeatSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HEARTBEAT" />
+
+        <Switch
+            android:id="@+id/mbllSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MBLL" />
+
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bt_blue"
+            android:text="RESET HEMO"
+            android:textColor="@android:color/white"
+            android:textSize="8dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0px"-->
+    <!--        android:layout_weight="1">-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/data780TextView"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:textColor="@android:color/holo_red_dark"-->
+    <!--            android:text="[d780]"/>-->
+    <!--    </ScrollView>-->
+
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0px"-->
+    <!--        android:layout_weight="1">-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/data850TextView"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:textColor="@android:color/holo_blue_dark"-->
+    <!--            android:text="[d850]"/>-->
+    <!--    </ScrollView>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/emotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emotion"
+            android:layout_gravity="center"
+            android:textColor="@android:color/holo_green_dark" />
+
+
+        <ImageView
+            android:id="@+id/iv_emotion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/smile" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="1dp">
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bt_red"
+            android:text="Start"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/monitor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bt_blue"
+            android:text="Monitor"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bt_red"
+            android:text="Stop"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
