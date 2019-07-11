@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NirsitSDK</string>
+    <string name="set_nirsit_ip">Set Nirsit Ip</string>
+    <string name="clear_log">Clear Log</string>
+    <string name="reset_hemo">Reset Hemo</string>
+    <string name="mbll">MBLL</string>
+    <string name="heartbeat">HEARTBEAT</string>
+    <string name="lpf">LPF</string>
+    <string name="toolbar_title">情绪感知</string>
 </resources>

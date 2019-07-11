@@ -3,54 +3,151 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp">
+>
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tl"
+        android:background="#5975AA"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:gravity="center"
-        android:paddingBottom="10dp">
-
-        <Switch
-            android:id="@+id/lpfSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LPF" />
-
-        <Switch
-            android:id="@+id/heartbeatSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HEARTBEAT" />
-
-        <Switch
-            android:id="@+id/mbllSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MBLL" />
-
-
-        <Button
-            android:id="@+id/resetButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bt_blue"
-            android:text="RESET HEMO"
-            android:textColor="@android:color/white"
-            android:textSize="8dp" />
-
-    </LinearLayout>
+        android:layout_height="?actionBarSize">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="@string/toolbar_title"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center"
+                android:textSize="22sp"
+                android:textColor="#FFFFFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp" />
+        </FrameLayout>
+    </android.support.v7.widget.Toolbar>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
+    <LinearLayout
+        android:id="@+id/setting_container"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:paddingBottom="10dp">
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Switch
+                android:id="@+id/lpfSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lpf" />
+
+            <Switch
+                android:id="@+id/heartbeatSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/heartbeat" />
+
+            <Switch
+                android:id="@+id/mbllSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mbll" />
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/reset_hemo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_marginRight="10dp"
+                android:id="@+id/resetButton"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/reset"
+                android:layout_marginEnd="10dp" />
+            <TextView
+                android:text="@string/set_nirsit_ip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/set_nirsit_ip"
+                android:layout_marginRight="10dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/set"
+                android:layout_marginEnd="10dp" />
+            <TextView
+                android:text="@string/clear_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/clear_log"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/clear"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/show_more"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/more"
+        android:layout_gravity="center"
+        android:layout_width="18dp"
+        android:layout_height="18dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/emotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emotion"
+            android:layout_gravity="center"
+            android:textColor="@android:color/holo_green_dark" />
+
+
+        <ImageView
+            android:id="@+id/iv_emotion"
+            android:layout_marginTop="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/smile" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/hint"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:layout_marginBottom="100dp"
+        android:text="正在初始感知情绪中～"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
@@ -58,6 +155,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:background="@android:color/darker_gray"/>
 
     <!--    <ScrollView-->
@@ -86,34 +185,13 @@
     <!--            android:text="[d850]"/>-->
     <!--    </ScrollView>-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:orientation="vertical"
-        android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/emotion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Emotion"
-            android:layout_gravity="center"
-            android:textColor="@android:color/holo_green_dark" />
-
-
-        <ImageView
-            android:id="@+id/iv_emotion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleType="centerInside"
-            android:src="@drawable/smile" />
-
-    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:background="@android:color/darker_gray"/>
 
 
@@ -121,38 +199,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:padding="1dp">
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bt_red"
-            android:text="Start"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="25dp"
+            android:background="@drawable/play"
             android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/monitor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bt_blue"
-            android:text="Monitor"
-            android:textColor="@android:color/white" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="25dp"
+            android:background="@drawable/change"
+            />
 
         <Button
             android:id="@+id/stopButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bt_red"
-            android:text="Stop"
-            android:textColor="@android:color/white" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="25dp"
+            android:background="@drawable/stop"/>
+
 
     </LinearLayout>
 

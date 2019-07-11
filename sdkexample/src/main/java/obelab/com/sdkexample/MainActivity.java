@@ -1,5 +1,9 @@
 package obelab.com.sdkexample;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,14 +13,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -38,6 +46,7 @@ import obelab.com.nirsitsdk.NirsitProvider;
 import obelab.com.sdkexample.model.Song;
 import obelab.com.sdkexample.service.MusicBinder;
 import obelab.com.sdkexample.service.MusicService;
+import obelab.com.sdkexample.utils.DensityUtil;
 import obelab.com.sdkexample.utils.GraphUtils;
 import obelab.com.sdkexample.utils.PlaybackInfoListener;
 import uk.me.berndporr.iirj.Butterworth;
@@ -70,9 +79,15 @@ public class MainActivity extends AppCompatActivity {
     Switch mbllSwitch;
     Switch heartbeatSwitch;
 
+    Button clearLog;
+    Button showMore;
+    Button setIp;
+    boolean isShowMore = false;
     Button monitorButton;
     // Default device ip
     String ip = "192.168.0.1";
+
+    LinearLayout setting_container;
     final int port = 50007;
     final int TIME_OUT = 3000;
 
@@ -175,7 +190,11 @@ public class MainActivity extends AppCompatActivity {
         resetButton = findViewById(R.id.resetButton);
         monitorButton = findViewById(R.id.monitor);
         mEmotionImageView = findViewById(R.id.iv_emotion);
-
+        showMore = findViewById(R.id.show_more);
+        setIp = findViewById(R.id.set_nirsit_ip);
+        clearLog = findViewById(R.id.clear_log);
+        setting_container = findViewById(R.id.setting_container);
+        DensityUtil.setTransparent((Toolbar) findViewById(R.id.tl),this);
         mEmotionsResource = new int[]{R.drawable.neutral, R.drawable.smile, R.drawable.cry};
         mGraphUtils = new GraphUtils(mLineChart, new String[]{ "data780", "data850" }, mColors);
 
@@ -233,6 +252,38 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 nirsitProvider.resetHemo();
+            }
+        });
+
+        setIp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeAddressDialog();
+            }
+        });
+
+        clearLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                data780TextView.setText("[d780]\n");
+//                data850TextView.setText("[d850]\n");
+            }
+        });
+
+        showMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isShowMore){
+                    setting_container.setVisibility(View.VISIBLE);
+                    openSettingAnim(setting_container,80);
+                    showMore.setBackgroundResource(R.drawable.up);
+                    isShowMore = true;
+                }else {
+                    setting_container.setVisibility(View.VISIBLE);
+                    closeSettingAnim(setting_container);
+                    showMore.setBackgroundResource(R.drawable.more);
+                    isShowMore = false;
+                }
             }
         });
 
@@ -299,8 +350,53 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "onDisconnected()", Toast.LENGTH_SHORT).show();
             }
         });
+        setRotation();
         playSet();
     }
+
+    private void setRotation(){
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(mEmotionImageView,"rotation",0f,359f);
+        rotation.setRepeatCount(ObjectAnimator.INFINITE);
+        rotation.setInterpolator(new LinearInterpolator());
+        rotation.setDuration(5000);
+        rotation.start();
+    }
+
+    private void openSettingAnim(View v,int height) {
+        v.setVisibility(View.VISIBLE);
+        float mDensity = getResources().getDisplayMetrics().density;
+        int mHeight = (int) (mDensity * height + 0.5);//伸展高度
+        ValueAnimator animator = createAnimator(v, 0, mHeight);
+        animator.start();
+    }
+
+    private void closeSettingAnim(final View view) {
+        int origHeight = view.getHeight();
+        ValueAnimator animator = createAnimator(view, origHeight, 0);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                view.setVisibility(View.GONE);
+            }
+        });
+        animator.start();
+    }
+
+    private ValueAnimator createAnimator(final View v, int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator arg0) {
+                int value = (int) arg0.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+                layoutParams.height = value;
+                v.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+
 
     private void startRecord() {
         new Thread(new Runnable() {
@@ -386,26 +482,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.menu_ip:
-                showChangeAddressDialog();
-                break;
-            case R.id.menu_clear:
-//                data780TextView.setText("[d780]\n");
-//                data850TextView.setText("[d850]\n");
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void init() throws IOException {
         Socket socket = new Socket();
