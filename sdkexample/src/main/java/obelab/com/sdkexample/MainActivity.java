@@ -29,6 +29,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -42,6 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import obelab.com.nirsitsdk.NirsitData;
 import obelab.com.nirsitsdk.NirsitProvider;
 import obelab.com.sdkexample.model.Song;
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     Button stopButton;
     Button resetButton;
     NirsitProvider nirsitProvider;
-    private ImageView mEmotionImageView;
+    private CircleImageView mEmotionImageView;
 
     Switch lpfSwitch;
     Switch mbllSwitch;
@@ -88,12 +91,14 @@ public class MainActivity extends AppCompatActivity {
     Button monitorButton;
     TextView hint;
     TextView songName;
-    ImageView songPhoto;
+    TextView singerName;
+    CircleImageView songPhoto;
     // Default device ip
     String ip = "192.168.0.1";
 
     LinearLayout setting_container;
     LinearLayout songContainer;
+    ImageView background;
     final int port = 50007;
     final int TIME_OUT = 3000;
 
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
     private List<AssetFileDescriptor> mSongs;
     private String[] mHint;
     private String[] mSongName;
+    private String[] mSingerName;
     private int[] mSongPhoto;
 
 
@@ -207,17 +213,28 @@ public class MainActivity extends AppCompatActivity {
         setting_container = findViewById(R.id.setting_container);
         hint = findViewById(R.id.hint);
         songName = findViewById(R.id.song_name);
+        singerName = findViewById(R.id.singer_name);
         songPhoto = findViewById(R.id.iv_song);
         songContainer = findViewById(R.id.song_container);
+        background = findViewById(R.id.background);
         DensityUtil.setTransparent((Toolbar) findViewById(R.id.tl),this);
         mEmotionsResource = new int[]{R.drawable.neutral, R.drawable.smile, R.drawable.cry};
         mSongPhoto = new int[]{R.drawable.song_netural,R.drawable.song_positive,R.drawable.song_negative};
-        mSongName = new String[]{"高橋優 - さくらのうた","Bruno Mars - Marry You","朴孝信 - 花信"};
+        mSongName = new String[]{"さくらのうた","Marry You","花信"};
+        mSingerName = new String[]{"高橋優","Bruno Mars","朴孝信"};
         mHint = new String[]{"总之岁月漫长，然而值得等待","以微笑示人吧，微笑是爱的开始","心若嘈杂，在哪儿都不能安静"};
         mGraphUtils = new GraphUtils(mLineChart, new String[]{ "data780", "data850" }, mColors);
 
-        songPhoto.setBackgroundResource(mSongPhoto[0]);
-        songName.setText(mSongName[0]);
+        songPhoto.setImageResource(mSongPhoto[2]);
+        songName.setText(mSongName[2]);
+        singerName.setText(mSingerName[2]);
+
+        Glide.with(this)
+                .load(mSongPhoto[2])
+                .dontAnimate()
+                .bitmapTransform(new BlurTransformation(this, 100, 5))
+                .into(background);
+
         hint.setText("正在初始感知情绪中～");
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -254,27 +271,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        songPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isShowEmotion){
-                    songContainer.setVisibility(View.GONE);
-                    mEmotionImageView.setVisibility(View.VISIBLE);
-                    isShowEmotion = true;
-                }
-            }
-        });
-
-        mEmotionImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isShowEmotion){
-                    mEmotionImageView.setVisibility(View.GONE);
-                    songContainer.setVisibility(View.VISIBLE);
-                    isShowEmotion = false;
-                }
-            }
-        });
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -397,10 +393,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRotation(){
-        ObjectAnimator rotation = ObjectAnimator.ofFloat(mEmotionImageView,"rotation",0f,359f);
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(songPhoto,"rotation",0f,359f);
         rotation.setRepeatCount(ObjectAnimator.INFINITE);
         rotation.setInterpolator(new LinearInterpolator());
-        rotation.setDuration(5000);
+        rotation.setDuration(8000);
         rotation.start();
     }
 
@@ -463,8 +459,9 @@ public class MainActivity extends AppCompatActivity {
             result = 2;
         }
         hint.setText(mHint[result]);
-        songPhoto.setBackgroundResource(mSongPhoto[result]);
+        songPhoto.setImageResource(mSongPhoto[result]);
         songName.setText(mSongName[result]);
+        singerName.setText(mSingerName[result]);
         if (mSongs != null) {
             mMusicBinder.loadMedia(mSongs.get(result), false, false);
             mMusicBinder.play();
