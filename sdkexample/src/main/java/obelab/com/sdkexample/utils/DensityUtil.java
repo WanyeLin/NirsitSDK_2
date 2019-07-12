@@ -14,9 +14,7 @@ import android.view.WindowManager;
 
 import obelab.com.sdkexample.R;
 
-/**
- * Created by Hosigus on 2018/7/20.
- */
+
 public class DensityUtil {
 
     private static int getStatusBarHeight(Context context) {
