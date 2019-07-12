@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -83,11 +84,16 @@ public class MainActivity extends AppCompatActivity {
     Button showMore;
     Button setIp;
     boolean isShowMore = false;
+    boolean isShowEmotion = true;//是否显示EmotionView
     Button monitorButton;
+    TextView hint;
+    TextView songName;
+    ImageView songPhoto;
     // Default device ip
     String ip = "192.168.0.1";
 
     LinearLayout setting_container;
+    LinearLayout songContainer;
     final int port = 50007;
     final int TIME_OUT = 3000;
 
@@ -108,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
             ColorTemplate.VORDIPLOM_COLORS[1],
     };
     private List<AssetFileDescriptor> mSongs;
+    private String[] mHint;
+    private String[] mSongName;
+    private int[] mSongPhoto;
+
+
     private MusicBinder mMusicBinder;
     private int[] mPlayResults = {0, 0, 0};
     private PlaybackInfoListener mPlaybackInfoListener = new PlaybackInfoListener() {
@@ -194,9 +205,20 @@ public class MainActivity extends AppCompatActivity {
         setIp = findViewById(R.id.set_nirsit_ip);
         clearLog = findViewById(R.id.clear_log);
         setting_container = findViewById(R.id.setting_container);
+        hint = findViewById(R.id.hint);
+        songName = findViewById(R.id.song_name);
+        songPhoto = findViewById(R.id.iv_song);
+        songContainer = findViewById(R.id.song_container);
         DensityUtil.setTransparent((Toolbar) findViewById(R.id.tl),this);
         mEmotionsResource = new int[]{R.drawable.neutral, R.drawable.smile, R.drawable.cry};
+        mSongPhoto = new int[]{R.drawable.song_netural,R.drawable.song_positive,R.drawable.song_negative};
+        mSongName = new String[]{"高橋優 - さくらのうた","Bruno Mars - Marry You","朴孝信 - 花信"};
+        mHint = new String[]{"总之岁月漫长，然而值得等待","以微笑示人吧，微笑是爱的开始","心若嘈杂，在哪儿都不能安静"};
         mGraphUtils = new GraphUtils(mLineChart, new String[]{ "data780", "data850" }, mColors);
+
+        songPhoto.setBackgroundResource(mSongPhoto[0]);
+        songName.setText(mSongName[0]);
+        hint.setText("正在初始感知情绪中～");
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,10 +250,30 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }).start();
-
-
             }
 
+        });
+
+        songPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isShowEmotion){
+                    songContainer.setVisibility(View.GONE);
+                    mEmotionImageView.setVisibility(View.VISIBLE);
+                    isShowEmotion = true;
+                }
+            }
+        });
+
+        mEmotionImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShowEmotion){
+                    mEmotionImageView.setVisibility(View.GONE);
+                    songContainer.setVisibility(View.VISIBLE);
+                    isShowEmotion = false;
+                }
+            }
         });
 
         stopButton.setOnClickListener(new View.OnClickListener() {
@@ -420,7 +462,9 @@ public class MainActivity extends AppCompatActivity {
         if (mPlayResults[2] > mPlayResults[result]) {
             result = 2;
         }
-
+        hint.setText(mHint[result]);
+        songPhoto.setBackgroundResource(mSongPhoto[result]);
+        songName.setText(mSongName[result]);
         if (mSongs != null) {
             mMusicBinder.loadMedia(mSongs.get(result), false, false);
             mMusicBinder.play();
