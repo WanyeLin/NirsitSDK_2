@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NirsitSDK 2.iml" filepath="$PROJECT_DIR$/NirsitSDK 2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/NirsitSDK_2.iml" filepath="$PROJECT_DIR$/.idea/NirsitSDK_2.iml" />
       <module fileurl="file://$PROJECT_DIR$/nirsit_sdk/nirsit_sdk.iml" filepath="$PROJECT_DIR$/nirsit_sdk/nirsit_sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/sdkexample/sdkexample.iml" filepath="$PROJECT_DIR$/sdkexample/sdkexample.iml" />
     </modules>
